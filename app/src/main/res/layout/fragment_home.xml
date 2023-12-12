@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.HomeFragment">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_42sdp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_15sdp">
+
+        <RelativeLayout
+            android:id="@+id/rlSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_42sdp"
+            android:background="@drawable/background_search">
+
+            <EditText
+                android:id="@+id/tvSearch"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:gravity="top"
+                android:hint="Search news"
+                android:textColor="#000000"
+                android:textSize="@dimen/_12sdp" />
+
+            <ImageButton
+                android:id="@+id/imgSearch"
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_14sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_toEndOf="@+id/tvSearch"
+                android:src="@drawable/ic_search" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlBell"
+            android:layout_width="@dimen/_43sdp"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:background="@drawable/background_bell">
+
+            <ImageButton
+                android:layout_width="@dimen/_13sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_bell" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_21sdp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="116dp"
+        android:layout_marginRight="15dp">
+
+        <TextView
+            android:id="@+id/latest_news"
+            android:layout_width="111dp"
+            android:layout_height="21dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="top"
+            android:lineHeight="21sp"
+            android:lineSpacingExtra="-1sp"
+            android:text="Latest News"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/rlSeeAll"
+            android:layout_width="67dp"
+            android:layout_height="21dp"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/tv_see_all"
+                android:layout_width="39dp"
+                android:layout_height="21dp"
+                android:gravity="top"
+                android:text="See All"
+                android:textColor="#0080FF"
+                android:textSize="12sp" />
+
+            <ImageButton
+                android:layout_width="10dp"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/tv_see_all"
+                android:src="@drawable/ic_combined" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLatest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="153dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="21dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="417dp"
+        android:layout_marginRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="top"
+            android:lineHeight="21sp"
+            android:lineSpacingExtra="-1sp"
+            android:text="Recomendation Topic"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/rlViewAll"
+            android:layout_width="67dp"
+            android:layout_height="21dp"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:id="@+id/tv_view_all"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:gravity="top"
+                android:text="See All"
+                android:textColor="#0080FF"
+                android:textSize="12sp" />
+
+            <ImageButton
+                android:layout_width="10dp"
+                android:layout_height="12dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/tv_view_all"
+                android:src="@drawable/ic_combined" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecommend"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="465dp"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal">
+
+        </androidx.recyclerview.widget.RecyclerView>
+</RelativeLayout>
