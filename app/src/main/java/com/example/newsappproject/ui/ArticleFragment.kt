@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.example.newsappproject.R
 import com.example.newsappproject.databinding.FragmentArticleBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
@@ -26,7 +27,14 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
 
         binding.webView.apply {
             webViewClient = WebViewClient()
-            article
+            article.url?.let {
+                loadUrl(it)
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            newsViewModel.addToFavorite(article)
+            Snackbar.make(view, "Added to favorites", Snackbar.LENGTH_SHORT).show()
         }
     }
 }

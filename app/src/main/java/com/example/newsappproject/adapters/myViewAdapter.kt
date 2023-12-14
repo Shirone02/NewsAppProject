@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.newsappproject.ui.FavoriteFragment
 import com.example.newsappproject.ui.HomeFragment
-import com.example.newsappproject.ui.ProfileFragment
+import com.example.newsappproject.ui.SearchFragment
 
 class myViewAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(
     fragmentManager, lifecycle) {
@@ -19,7 +19,7 @@ class myViewAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : Fr
         return when(position) {
             0 -> HomeFragment()
             1 -> FavoriteFragment()
-            2 -> ProfileFragment()
+            2 -> SearchFragment()
             else -> {HomeFragment()}
         }
     }

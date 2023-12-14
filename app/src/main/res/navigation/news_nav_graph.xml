@@ -6,12 +6,12 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.newsappproject.ui.ProfileFragment"
+        android:id="@+id/searchFragment"
+        android:name="com.example.newsappproject.ui.SearchFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_profileFragment_to_articleFragment"
+            android:id="@+id/action_searchFragment_to_articleFragment"
             app:destination="@id/articleFragment" />
     </fragment>
     <fragment
@@ -37,7 +37,7 @@
         android:name="com.example.newsappproject.ui.ArticleFragment"
         android:label="ArticleFragment" >
         <argument
-            android:name="MyArticle"
-            app:argType="com.example.newsprojectpractice.models.Article"/>
+            android:name="article"
+            app:argType="com.example.newsappproject.models.Article"/>
     </fragment>
 </navigation>

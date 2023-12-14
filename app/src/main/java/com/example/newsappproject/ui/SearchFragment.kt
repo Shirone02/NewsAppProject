@@ -1,5 +1,6 @@
 package com.example.newsappproject.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,36 +9,39 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsappproject.R
 import com.example.newsappproject.adapters.NewsAdapter
-import com.example.newsappproject.databinding.FragmentHomeBinding
+import com.example.newsappproject.databinding.FragmentFavoriteBinding
+import com.example.newsappproject.databinding.FragmentSearchBinding
 import com.example.newsappproject.utils.Constants
 import com.example.newsappproject.utils.Resource
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
-
+class SearchFragment : Fragment(R.layout.fragment_search) {
     lateinit var newsViewModel: NewsViewModel
     lateinit var newsAdapter: NewsAdapter
     lateinit var retryButton: Button
     lateinit var errorText: TextView
-    lateinit var itemHomeError: CardView
-    lateinit var binding: FragmentHomeBinding
+    lateinit var itemHSearchError: CardView
+    lateinit var binding: FragmentSearchBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentHomeBinding.bind(view)
+        binding = FragmentSearchBinding.bind(view)
 
-        itemHomeError = view.findViewById(R.id.itemHotNewsError)
+        itemHSearchError = view.findViewById(R.id.itemSearchError)
         val inflater = requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view: View = inflater.inflate(R.layout.item_error, null)
 
@@ -45,16 +49,29 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         errorText = view.findViewById(R.id.errorText)
 
         newsViewModel = (activity as NewsActivity).newsViewModel
-        setupHotNewsRecycler()
+        setupSearchRecycler()
 
         newsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
-            findNavController().navigate(R.id.action_homeFragment_to_articleFragment, bundle)
+            findNavController().navigate(R.id.action_searchFragment_to_articleFragment, bundle)
         }
 
-        newsViewModel.latestNews.observe(viewLifecycleOwner, Observer { response ->
+        var job:  Job? = null
+        binding.searchEdit.addTextChangedListener() { editable ->
+            job?.cancel()
+            job = MainScope().launch {
+                delay(Constants.SEARCH_NEW_TIME_DELAY)
+                editable?.let {
+                    if (editable.toString().isNotEmpty()){
+                        newsViewModel.searchNews(editable.toString())
+                    }
+                }
+            }
+        }
+
+        newsViewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
             when (response){
                 is Resource.Success<*> ->{
                     hideProgressBar()
@@ -62,9 +79,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     response.data?.let {newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPages = newsResponse.totalResults / Constants.QUERY_PAGE_SIZE + 2
-                        isLastPage = newsViewModel.latestNewsPage == totalPages
+                        isLastPage = newsViewModel.searchNewsPage == totalPages
                         if (isLastPage){
-                            binding.recyclerHotNews.setPadding(0,0,0,0)
+                            binding.recyclerSearch.setPadding(0,0,0,0)
                         }
                     }
                 }
@@ -81,8 +98,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
         })
 
-        retryButton.setOnClickListener {
-            newsViewModel.getLatestNews("us")
+        retryButton.setOnClickListener{
+            if (binding.searchEdit.text.toString().isNotEmpty()){
+                newsViewModel.searchNews(binding.searchEdit.text.toString())
+            } else {
+                hideErrorMessage()
+            }
         }
     }
 
@@ -105,13 +126,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     // an thong bao loi khi internet binh thuong
     private fun hideErrorMessage() {
-        itemHomeError.visibility = View.VISIBLE
+        itemHSearchError.visibility = View.VISIBLE
         isError = false
     }
 
     // hien thi thong bao loi
     private fun showErrorMessage(message: String) {
-        itemHomeError.visibility = View.VISIBLE
+        itemHSearchError.visibility = View.VISIBLE
         errorText.text = message
         isError = true
     }
@@ -133,7 +154,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val shouldPaginate =
                 isNoErrors && isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                newsViewModel.getLatestNews("us")
+                newsViewModel.searchNews(binding.searchEdit.text.toString())
                 isScrolling = false
             }
 
@@ -148,12 +169,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun setupHotNewsRecycler() {
+    private fun setupSearchRecycler() {
         newsAdapter = NewsAdapter()
-        binding.recyclerHotNews.apply {
+        binding.recyclerSearch.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
-            addOnScrollListener(this@HomeFragment.scrollListener)
+            addOnScrollListener(this@SearchFragment.scrollListener)
         }
     }
 }
